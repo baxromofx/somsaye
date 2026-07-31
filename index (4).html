@@ -466,7 +466,7 @@
     if(name) lines.push(`Имя: ${name}`);
     if(phone) lines.push(`Телефон: ${phone}`);
     if(address) lines.push(`Адрес: ${address}`);
-
+ 
     const text = encodeURIComponent(lines.join('\n'));
     window.open(`https://t.me/${TELEGRAM_USERNAME}?text=${text}`, '_blank');
   }
