@@ -266,7 +266,7 @@
     </div>
     <div class="field">
       <label for="f-phone">Телефон</label>
-      <input id="f-phone" type="tel" placeholder="+998  _  ">
+      <input id="f-phone" type="tel" placeholder="+998 __ ___ __ __">
     </div>
     <div class="field">
       <label for="f-address">Адрес доставки</label>
@@ -274,6 +274,7 @@
     </div>
     <div class="cash-note">💵 Оплата наличными при получении</div>
   </div>
+
   <div class="order-bar">
     <div class="totals">
       <div class="total-label">Итого</div>
@@ -326,7 +327,7 @@
   items.forEach(item => {
     const card = document.createElement('div');
     card.className = 'card';
-    card.innerHTML = 
+    card.innerHTML = `
       <div class="badge ${item.badgeClass}">${item.badge}</div>
       <div class="card-body">
         <h3>${item.name}</h3>
@@ -337,7 +338,7 @@
           <button aria-label="Добавить" onclick="changeQty('${item.id}', 1)">+</button>
         </div>
       </div>
-    ;
+    `;
     grid.appendChild(card);
   });
 
@@ -373,21 +374,22 @@
       if(qty[i.id] > 0){
         const sum = qty[i.id] * i.price;
         total += sum;
-        lines.push(- ${i.name} x${qty[i.id]} = ${sum.toLocaleString('ru-RU')} сум);
+        lines.push(`- ${i.name} x${qty[i.id]} = ${sum.toLocaleString('ru-RU')} сум`);
       }
     });
-    lines.push(Итого: ${total.toLocaleString('ru-RU')} сум);
-    if(name) lines.push(Имя: ${name});
-    if(phone) lines.push(Телефон: ${phone});
-    if(address) lines.push(Адрес: ${address});
-    lines.push(Оплата: Наличные при получении);
+    lines.push(`Итого: ${total.toLocaleString('ru-RU')} сум`);
+    if(name) lines.push(`Имя: ${name}`);
+    if(phone) lines.push(`Телефон: ${phone}`);
+    if(address) lines.push(`Адрес: ${address}`);
+    lines.push(`Оплата: Наличные при получении`);
+
     const text = lines.join('\n');
     const btn = document.getElementById('order-btn');
     const btnText = document.getElementById('order-btn-text');
     btn.disabled = true;
     btnText.textContent = 'Отправляем…';
 
-    const url = https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(text)};
+    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(text)}`;
 
     fetch(url, { method: 'GET', mode: 'no-cors' })
     .then(() => {
