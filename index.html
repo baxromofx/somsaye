@@ -259,14 +259,14 @@
 
   <div class="details" id="order-section">
     <h2>Куда доставить</h2>
-    <p class="hint">Необязательно, но поможет быстрее принять заказ</p>
+    <p class="hint">Телефон обязателен — без него кнопка заказа не активируется</p>
     <div class="field">
       <label for="f-name">Имя</label>
       <input id="f-name" type="text" placeholder="Как к вам обращаться">
     </div>
     <div class="field">
-      <label for="f-phone">Телефон</label>
-      <input id="f-phone" type="tel" placeholder="+998 __ ___ __ __">
+      <label for="f-phone">Телефон *</label>
+      <input id="f-phone" type="tel" placeholder="+998 __ ___ __ __" oninput="updateTotal()">
     </div>
     <div class="field">
       <label for="f-address">Адрес доставки</label>
@@ -353,7 +353,8 @@
     items.forEach(i => { total += qty[i.id] * i.price; count += qty[i.id]; });
     document.getElementById('total').textContent = total.toLocaleString('ru-RU');
     document.getElementById('pill-count').textContent = count;
-    document.getElementById('order-btn').disabled = count === 0;
+    const phoneFilled = document.getElementById('f-phone').value.replace(/\D/g,'').length >= 9;
+    document.getElementById('order-btn').disabled = count === 0 || !phoneFilled;
   }
 
   function toggleTheme(){
@@ -367,6 +368,11 @@
     const name = document.getElementById('f-name').value.trim();
     const phone = document.getElementById('f-phone').value.trim();
     const address = document.getElementById('f-address').value.trim();
+
+    if(phone.replace(/\D/g,'').length < 9){
+      updateTotal();
+      return;
+    }
 
     let lines = ["🥟 Новый заказ SOMSAye"];
     let total = 0;
